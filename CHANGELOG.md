@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.0.0 - 2025-11-17
+
+- Merge pull request #10 from JulianaForbici/feature/core
+- feat(core): add domain core and status/menu endpoints
+
+
 ## v4.0.0 - 2025-11-17
 
 - Merge pull request #9 from JulianaForbici/develop
