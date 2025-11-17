@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.0.0 - 2025-11-17
+
+- Merge pull request #9 from JulianaForbici/develop
+
+
 ## v3.0.5 - 2025-11-17
 
 - Merge remote-tracking branch 'origin/main' into develop
