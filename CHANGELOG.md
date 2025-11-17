@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.0.3 - 2025-11-17
+
+- Docker-compose.yml atualizado e feito
+
+
 ## v3.0.2 - 2025-11-17
 
 - Merge branch 'develop' of https://github.com/JulianaForbici/proway-projeto-git into develop
