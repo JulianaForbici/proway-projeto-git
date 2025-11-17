@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.0.0 - 2025-11-17
+
+- Merge pull request #6 from JulianaForbici/develop
+- Merge pull request #5 from JulianaForbici/develop
+- Merge pull request #4 from JulianaForbici/hotfix/corrige-index
+- Merge pull request #3 from JulianaForbici/main
+- Merge pull request #2 from JulianaForbici/feature/core
+- Merge pull request #1 from JulianaForbici/develop
+
+
 ## v1.0.1 - 2025-11-17
 
 - Atualizado estrutura do projeto
@@ -7,4 +17,3 @@
 - feat: estrutura inicial da cafeteria
 - Style.css feito.
 - Index feito. Criado interface e layout da página principal da cafeteria e realizado itens do cardápio
-
