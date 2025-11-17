@@ -1,5 +1,11 @@
 # Changelog
 
+## v8.0.0 - 2025-11-17
+
+- Merge pull request #12 from JulianaForbici/feature/tests-core
+- test(core): adiciona testes básicos para horário de funcionamento
+
+
 ## v7.0.0 - 2025-11-17
 
 - Merge pull request #11 from JulianaForbici/hotfix/corrige-index
