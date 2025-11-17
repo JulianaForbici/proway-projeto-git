@@ -1,5 +1,11 @@
 # Changelog
 
+## v9.0.0 - 2025-11-17
+
+- Merge pull request #13 from JulianaForbici/feature/tests-core
+- Testes com Jest - Integração continua aplicada
+
+
 ## v8.0.0 - 2025-11-17
 
 - Merge pull request #12 from JulianaForbici/feature/tests-core
