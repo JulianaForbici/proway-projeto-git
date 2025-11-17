@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.0.0 - 2025-11-17
+
+- Merge pull request #11 from JulianaForbici/hotfix/corrige-index
+- Merge branch 'develop' into hotfix/corrige-index
+- fix(index): corrige a palavra 'chefe'
+
+
 ## v6.0.0 - 2025-11-17
 
 - Update README with project details and guidelines
