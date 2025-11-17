@@ -1,4 +1,4 @@
-name: Auto Tag Develop
+name: Auto Tag Develop/Main
 
 on:
   push:
@@ -21,16 +21,21 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: autoversion-${{ github.ref_name }}
+  cancel-in-progress: false
+
 jobs:
-  tag-develop:
+  auto-tag:
+    name: Calcular tag e atualizar changelog
     if: github.actor != 'github-actions[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
+          fetch-depth: 0  
       - name: Compute next tag
         id: version
         env:
@@ -41,11 +46,14 @@ jobs:
           DISPATCH_BRANCH: ${{ github.event.inputs.target_branch || '' }}
         run: |
           set -euo pipefail
-          EVENT="$EVENT_NAME"
+
+          echo "Evento: $EVENT_NAME"
           TARGET_BRANCH=""
-          case "$EVENT" in
+
+          case "$EVENT_NAME" in
             pull_request)
               if [ "$PR_MERGED" != "true" ]; then
+                echo "PR ainda não foi mergeado. Encerrando."
                 echo "run_job=false" >> "$GITHUB_OUTPUT"
                 exit 0
               fi
@@ -68,7 +76,8 @@ jobs:
 
           if [ -z "$TARGET_BRANCH" ]; then
             echo "Branch alvo não detectada."
-            exit 1
+            echo "run_job=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
 
           if [ "$TARGET_BRANCH" != "develop" ] && [ "$TARGET_BRANCH" != "main" ]; then
@@ -77,13 +86,19 @@ jobs:
             exit 0
           fi
 
+          # main = major release, develop = patch release
           RELEASE_TYPE="patch"
           if [ "$TARGET_BRANCH" = "main" ]; then
             RELEASE_TYPE="major"
           fi
 
+          echo "Branch alvo: $TARGET_BRANCH"
+          echo "Tipo de release: $RELEASE_TYPE"
+
           git fetch --tags --force
+
           LAST_GLOBAL_TAG=$(git tag -l 'v[0-9]*.0.[0-9]*' --sort=-version:refname | head -n 1 || true)
+          echo "Última tag global encontrada: ${LAST_GLOBAL_TAG:-nenhuma}"
 
           CURRENT_MAJOR=0
           if [ -n "$LAST_GLOBAL_TAG" ]; then
@@ -110,7 +125,7 @@ jobs:
             else
               LAST_PATCH=$(echo "$LAST_MAJOR_TAG" | sed -E 's/^v[0-9]+\.0\.([0-9]+)$/\1/')
               if ! [[ "$LAST_PATCH" =~ ^[0-9]+$ ]]; then
-                echo "Última tag ${LAST_MAJOR_TAG} não possui parte numérica válida."
+                echo "Última tag ${LAST_MAJOR_TAG} não possui parte de patch numérica válida."
                 exit 1
               fi
               NEXT_PATCH=$((LAST_PATCH + 1))
@@ -123,7 +138,8 @@ jobs:
           echo "target_branch=${TARGET_BRANCH}" >> "$GITHUB_OUTPUT"
           echo "release_type=${RELEASE_TYPE}" >> "$GITHUB_OUTPUT"
           echo "run_job=true" >> "$GITHUB_OUTPUT"
-          echo "Proxima tag: ${NEXT_TAG}"
+
+          echo "Próxima tag calculada: ${NEXT_TAG}"
 
       - name: Update changelog
         id: changelog
@@ -134,28 +150,34 @@ jobs:
           RELEASE_TYPE: ${{ steps.version.outputs.release_type }}
         run: |
           set -euo pipefail
-          CHANGELOG_FILE="CHANGELOG"
+
+          CHANGELOG_FILE="CHANGELOG.md"
+
           if [ -n "$LAST_TAG" ]; then
             COMMITS=$(git log "${LAST_TAG}..HEAD" --pretty=format:"- %s")
           else
             COMMITS=$(git log --pretty=format:"- %s")
           fi
+
           if [ -z "$COMMITS" ]; then
             if [ "$RELEASE_TYPE" = "major" ]; then
               COMMITS="- Release major sem commits adicionais desde a última tag."
             else
-              echo "Sem commits novos para o changelog."
+              echo "Sem commits novos desde a última tag. Nada a atualizar."
               echo "has_updates=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
           fi
+
           if [ ! -f "$CHANGELOG_FILE" ]; then
             printf "# Changelog\n\n" > "$CHANGELOG_FILE"
           fi
+
           EXISTING_CONTENT=""
           if [ -s "$CHANGELOG_FILE" ]; then
             EXISTING_CONTENT=$(sed '1d' "$CHANGELOG_FILE")
           fi
+
           {
             printf "# Changelog\n\n"
             printf "## %s - %s\n\n" "$NEXT_TAG" "$(date -u +'%Y-%m-%d')"
@@ -164,7 +186,9 @@ jobs:
               printf "%s\n" "$EXISTING_CONTENT"
             fi
           } > "$CHANGELOG_FILE"
+
           echo "has_updates=true" >> "$GITHUB_OUTPUT"
+          echo "Changelog atualizado para ${NEXT_TAG}"
 
       - name: Commit changelog
         if: steps.changelog.outputs.has_updates == 'true' && steps.version.outputs.run_job == 'true'
@@ -173,9 +197,15 @@ jobs:
           TARGET_BRANCH: ${{ steps.version.outputs.target_branch }}
         run: |
           set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add CHANGELOG
+          git add CHANGELOG.md
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para commitar no changelog."
+            exit 0
+          fi
+
           git commit -m "docs: update changelog for ${NEXT_TAG}"
           git push origin HEAD:"$TARGET_BRANCH"
 
@@ -183,16 +213,18 @@ jobs:
         if: steps.changelog.outputs.has_updates == 'true' && steps.version.outputs.run_job == 'true'
         env:
           NEXT_TAG: ${{ steps.version.outputs.next_tag }}
-          TARGET_BRANCH: ${{ steps.version.outputs.target_branch }}
         run: |
           set -euo pipefail
+
           if [ -z "$NEXT_TAG" ]; then
             echo "Sem nova tag para criar."
             exit 0
           fi
+
           if git rev-parse "$NEXT_TAG" >/dev/null 2>&1; then
             echo "Tag ${NEXT_TAG} já existe. Nada a fazer."
             exit 0
           fi
-          git tag -a "$NEXT_TAG" -m "Tag automatica gerada para ${TARGET_BRANCH}"
+
+          git tag -a "$NEXT_TAG" -m "Tag automática gerada pelo workflow"
           git push origin "$NEXT_TAG"
