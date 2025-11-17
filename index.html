@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cafeteria & Sushi - Sakura Coffee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">Sakura Coffee & Sushi</div>
+    <nav class="nav-links">
+      <a href="#sobre">Sobre</a>
+      <a href="#cardapio">Cardápio</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <h1>Café especial e sushi fresco em um só lugar</h1>
+        <p>
+          Bem-vindo à Sakura Coffee & Sushi: o ponto perfeito para quem ama
+          um bom espresso e não abre mão de um sushi preparado na hora.
+        </p>
+        <a href="#cardapio" class="btn-primary">Ver cardápio</a>
+      </div>
+      <div class="hero-image" aria-hidden="true"></div>
+    </section>
+
+    <section id="sobre" class="section">
+      <h2>Sobre a casa</h2>
+      <p>
+        A Sakura Coffee & Sushi nasceu da mistura entre duas paixões:
+        o café de torra artesanal e a culinária japonesa. Nosso ambiente
+        foi pensado para reuniões de trabalho, encontros com amigos e
+        momentos de pausa no dia a dia.
+      </p>
+    </section>
+
+    <section id="cardapio" class="section section-cardapio">
+      <h2>Cardápio principal</h2>
+
+      <div class="cards-grid">
+        <article class="card">
+          <h3>Espresso Clássico</h3>
+          <p>Café 100% arábica, extraído na temperatura e pressão ideais.</p>
+          <span class="price">R$ 8,00</span>
+        </article>
+
+        <article class="card">
+          <h3>Latte Sakura</h3>
+          <p>Leite vaporizado, dose dupla de espresso e toque suave de baunilha.</p>
+          <span class="price">R$ 14,00</span>
+        </article>
+
+        <article class="card">
+          <h3>Combo Sushi 12 peças</h3>
+          <p>Nigiri, sashimi e uramaki em combinação clássica do chefe.</p>
+          <span class="price">R$ 42,00</span>
+        </article>
+
+        <article class="card">
+          <h3>Combo Sushi & Café</h3>
+          <p>Combo especial com 8 peças de sushi + 1 café à escolha.</p>
+          <span class="price">R$ 34,00</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="contato" class="section section-contato">
+      <h2>Contato & Reservas</h2>
+      <p>Preencha o formulário abaixo e retornaremos o quanto antes.</p>
+
+      <form class="form-contato" id="contato-form">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" name="nome" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary">Enviar</button>
+        <p class="form-status" id="form-status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Sakura Coffee & Sushi — Projeto de estudo com Git & GitHub</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
