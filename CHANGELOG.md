@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.0.5 - 2025-11-17
+
+- Merge remote-tracking branch 'origin/main' into develop
+- docs: update changelog for v3.0.0
+- Merge pull request #7 from JulianaForbici/develop
+- docs: update changelog for v2.0.0
+- Merge pull request #6 from JulianaForbici/develop
+- Merge pull request #5 from JulianaForbici/develop
+- Merge pull request #4 from JulianaForbici/hotfix/corrige-index
+- Merge pull request #3 from JulianaForbici/main
+- Merge pull request #2 from JulianaForbici/feature/core
+- Merge pull request #1 from JulianaForbici/develop
+
+
 <<<<<<< HEAD
 ## v3.0.4 - 2025-11-17
 
