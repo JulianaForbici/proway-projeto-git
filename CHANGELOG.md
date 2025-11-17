@@ -1,5 +1,10 @@
 # Changelog
 
+## v6.0.0 - 2025-11-17
+
+- Update README with project details and guidelines
+
+
 ## v5.0.0 - 2025-11-17
 
 - Merge pull request #10 from JulianaForbici/feature/core
