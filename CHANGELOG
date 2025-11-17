@@ -1,0 +1,10 @@
+# Changelog
+
+## v1.0.1 - 2025-11-17
+
+- Atualizado estrutura do projeto
+- README feito, com as estruturas de branchs e tecnologias utilizadas
+- feat: estrutura inicial da cafeteria
+- Style.css feito.
+- Index feito. Criado interface e layout da página principal da cafeteria e realizado itens do cardápio
+
